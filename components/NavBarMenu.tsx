@@ -1,0 +1,45 @@
+"use client";
+
+import { useState } from "react";
+import { Menu, XIcon } from "lucide-react";
+import Link from "next/link";
+import AuthBtn from "./AuthBtn";
+import { Separator } from "./ui/separator";
+
+type NavBarMenuProps = {
+  menuLinks: Array<{ href: string; name: string }>;
+};
+
+export default function NavBarMenu({ menuLinks }: NavBarMenuProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
+
+  return (
+    <div>
+      <Menu
+        className="cursor-pointer sm:hidden"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      />
+      {isMenuOpen && (
+        <div className="absolute right-0 top-0 z-[999] flex h-full w-[65vw] flex-col bg-background p-4 shadow-xl">
+          <XIcon
+            className="ml-auto cursor-pointer"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          />
+          <div className="pt-4">
+            {menuLinks.map((link) => (
+              <Link
+                className="font-bold hover:underline"
+                key={link.href}
+                href={link.href}
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+          <Separator className="my-4" />
+          <AuthBtn />
+        </div>
+      )}
+    </div>
+  );
+}
