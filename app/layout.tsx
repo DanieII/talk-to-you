@@ -4,26 +4,26 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 
 const openSans = Open_Sans({
-    subsets: ["latin"],
-    display: "swap",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-    title: "Talk To You",
-    description: "Practice your English speaking skills with Talk To You",
+  title: "Talk To You",
+  description: "Practice your English speaking skills with Talk To You",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body className={`${openSans.className} antialiased`}>
-                <NavBar />
-                {children}
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body className={`${openSans.className} antialiased`}>
+        <NavBar />
+        {children}
+      </body>
+    </html>
+  );
 }
