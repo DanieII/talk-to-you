@@ -1,15 +1,6 @@
-import { signIn } from "@/auth";
+import { signIn } from "next-auth/react";
 import { Button } from "./ui/button";
 
 export default function SignInBtn() {
-  return (
-    <form
-      action={async () => {
-        "use server";
-        await signIn();
-      }}
-    >
-      <Button type="submit">Sign in</Button>
-    </form>
-  );
+  return <Button onClick={() => signIn()}>Sign in</Button>;
 }

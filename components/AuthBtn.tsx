@@ -1,10 +1,11 @@
-import SignInBtn from "./SignInBtn";
+"use client";
+
+import { useSession } from "next-auth/react";
 import SignOutBtn from "./SignOutBtn";
-import { auth } from "@/auth";
+import SignInBtn from "./SignInBtn";
 
-export default async function AuthBtn() {
-  const session = await auth();
-  console.log(session);
+export default function AuthBtn() {
+  const { status } = useSession();
 
-  return session ? <SignOutBtn /> : <SignInBtn />;
+  return status === "authenticated" ? <SignOutBtn /> : <SignInBtn />;
 }

@@ -1,15 +1,19 @@
-import { signOut } from "@/auth";
+import { signOut } from "next-auth/react";
 import { Button } from "./ui/button";
+import { useRouter } from "next/navigation";
 
 export default function SignOutBtn() {
+  const router = useRouter();
+
   return (
-    <form
-      action={async () => {
-        "use server";
-        await signOut();
+    <Button
+      onClick={async () => {
+        // Avoid page reload
+        const data = await signOut({ redirect: false, callbackUrl: "/" });
+        router.push(data.url);
       }}
     >
-      <Button type="submit">Sign out</Button>
-    </form>
+      Sign out
+    </Button>
   );
 }
