@@ -1,26 +1,46 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import Image from "next/image";
+import { getConversationImage } from "@/lib/utils";
+import { Badge } from "./ui/badge";
 
 type ConversationCardProps = {
   title: string;
-  description: string;
-  image: string;
+  additionalData?: Array<string>;
 };
 
 export default function ConversationCard({
   title,
-  description,
-  image,
+  additionalData,
 }: ConversationCardProps) {
   return (
-    <Card className="lg:basis-[30%]">
+    <Card className="cursor-pointer">
       <CardHeader>
-        <Image src={image} width={500} height={500} alt={title} />
+        <Image
+          className="rounded-lg"
+          src={getConversationImage(title)}
+          width={500}
+          height={500}
+          alt={title}
+        />
       </CardHeader>
       <CardContent>
-        <CardTitle>{title}</CardTitle>
-        <p>{description}</p>
+        <CardTitle className="text-center">{title}</CardTitle>
       </CardContent>
+      {additionalData && (
+        <CardFooter className="flex justify-center gap-4">
+          {additionalData.map((data, index) => (
+            <Badge key={index} variant="outline">
+              {data}
+            </Badge>
+          ))}
+        </CardFooter>
+      )}
     </Card>
   );
 }

@@ -25,7 +25,7 @@ export default function NavBarMenu({ menuLinks }: NavBarMenuProps) {
             className="ml-auto cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           />
-          <div className="pt-4">
+          <div className="flex flex-col gap-4 pt-4">
             {menuLinks.map((link) => (
               <Link
                 className="font-bold hover:underline"

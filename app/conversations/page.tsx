@@ -1,47 +1,39 @@
 import { Button } from "@/components/ui/button";
-import ConversationCard from "@/components/ConversationCard";
 import { MessageCircle } from "lucide-react";
+import Link from "next/link";
+import ConversationCard from "@/components/ConversationCard";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { getUserConversations } from "@/lib/conversations";
 
-const conversations = [
-  {
-    title: "Job Interview",
-    description: "Practice for upcoming interviews with tailored questions.",
-    image: "https://picsum.photos/500",
-  },
-  {
-    title: "Casual Chat",
-    description: "Have a friendly conversation about anything you like.",
-    image: "https://picsum.photos/500",
-  },
-  {
-    title: "Job Interview",
-    description: "Practice for upcoming interviews with tailored questions.",
-    image: "https://picsum.photos/500",
-  },
-  {
-    title: "Casual Chat",
-    description: "Have a friendly conversation about anything you like.",
-    image: "https://picsum.photos/500",
-  },
-];
+export default async function Conversations() {
+  const session = await auth();
+  if (!session) redirect("/api/auth/signin");
 
-export default function Conversations() {
+  const userConversations = await getUserConversations(session.user.id);
+
   return (
-    <div className="container mx-auto flex flex-col p-4">
-      <h1 className="py-4 text-center text-3xl font-bold">
-        Your Conversations
-      </h1>
-      <Button className="mx-auto my-4" size="lg">
-        <MessageCircle /> Start a conversation
-      </Button>
-      <div className="flex flex-wrap justify-around gap-4 py-4">
-        {conversations.map((conversation, index) => (
-          <ConversationCard
-            key={index}
-            title={conversation.title}
-            description={conversation.description}
-            image={conversation.image}
-          />
+    <div className="container mx-auto flex flex-col gap-8 p-8">
+      <h1 className="text-center text-3xl font-bold">Your Conversations</h1>
+      <Link className="mx-auto" href="/conversations/start">
+        <Button size="lg">
+          <MessageCircle /> Start a conversation
+        </Button>
+      </Link>
+      <div className="flex flex-wrap justify-center gap-4">
+        {userConversations.map((conversation, index) => (
+          <div className="lg:basis-[30%]" key={index}>
+            <ConversationCard
+              title={conversation.title}
+              additionalData={[
+                conversation.createdAt.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "numeric",
+                }),
+              ]}
+            />
+          </div>
         ))}
       </div>
     </div>
