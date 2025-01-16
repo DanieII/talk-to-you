@@ -5,6 +5,7 @@ import ConversationCard from "@/components/ConversationCard";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getUserConversations } from "@/lib/conversations";
+import RemoveConversation from "@/components/RemoveConversation";
 
 export default async function Conversations() {
   const session = await auth();
@@ -22,7 +23,8 @@ export default async function Conversations() {
       </Link>
       <div className="flex flex-wrap justify-center gap-4">
         {userConversations.map((conversation, index) => (
-          <div className="lg:basis-[30%]" key={index}>
+          <div className="relative lg:basis-[30%]" key={index}>
+            <RemoveConversation conversationId={conversation.id} />
             <ConversationCard
               title={conversation.title}
               additionalData={[
