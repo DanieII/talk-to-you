@@ -1,22 +1,22 @@
 export const availableConversations = [
   {
     title: "Job Interview Preparation",
-    image: "/conversations/job.webp",
+    image: "/conversations/job.jpeg",
   },
   {
     title: "Asking for Directions",
-    image: "/conversations/tourist.webp",
+    image: "/conversations/tourist.jpeg",
   },
   {
     title: "Ordering Food at a Restaurant",
-    image: "/conversations/barista.webp",
+    image: "/conversations/restaurant.jpeg",
   },
   {
     title: "Shopping for Groceries",
-    image: "/conversations/shopping.webp",
+    image: "/conversations/shopping.jpeg",
   },
   {
     title: "Booking an Appointment",
-    image: "/conversations/doctor.webp",
+    image: "/conversations/doctor.jpeg",
   },
 ];

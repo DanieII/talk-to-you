@@ -22,19 +22,21 @@ export default async function Conversations() {
         </Button>
       </Link>
       <div className="flex flex-wrap justify-center gap-4">
-        {userConversations.map((conversation, index) => (
-          <div className="relative lg:basis-[30%]" key={index}>
+        {userConversations.map((conversation) => (
+          <div className="relative lg:basis-[30%]" key={conversation.id}>
             <RemoveConversation conversationId={conversation.id} />
-            <ConversationCard
-              title={conversation.title}
-              additionalData={[
-                conversation.createdAt.toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "numeric",
-                }),
-              ]}
-            />
+            <Link href={`/conversations/${conversation.id}`}>
+              <ConversationCard
+                title={conversation.title}
+                additionalData={[
+                  conversation.createdAt.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "numeric",
+                  }),
+                ]}
+              />
+            </Link>
           </div>
         ))}
       </div>

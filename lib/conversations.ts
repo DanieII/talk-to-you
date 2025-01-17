@@ -11,7 +11,13 @@ export async function createConversation(title: string) {
   const session = await auth();
   if (!session) redirect("/api/auth/signin?callbackUrl=/conversations/start");
 
-  await db.insert(conversations).values({ userId: session.user.id, title });
+  const [insertedRows] = await db
+    .insert(conversations)
+    .values({ userId: session.user.id, title })
+    .returning({ id: conversations.id });
+  const newConversationId = insertedRows.id;
+
+  redirect(`/conversations/${newConversationId}`);
 }
 
 export async function getUserConversations(userId: string) {
