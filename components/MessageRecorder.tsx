@@ -3,6 +3,7 @@
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { createMessage } from "@/lib/conversations";
 import { Mic } from "lucide-react";
+import { useEffect } from "react";
 
 type MessageRecorderProps = {
   conversationId: string;
@@ -13,6 +14,12 @@ export default function MessageRecorder({
 }: MessageRecorderProps) {
   const { isListening, transcript, error, toggleListening } =
     useSpeechRecognition();
+
+  useEffect(() => {
+    if (!isListening) {
+      if (transcript.trim()) createMessage(conversationId, transcript);
+    }
+  }, [transcript]);
 
   return (
     <div>
@@ -25,7 +32,6 @@ export default function MessageRecorder({
               className={`cursor-pointer ${isListening ? "text-destructive" : "text-primary"}`}
               size="44"
               onClick={() => toggleListening()}
-              //onClick={() => createMessage(conversationId, "Hello World")}
             />
           </div>
         )}

@@ -21,7 +21,7 @@ export const useSpeechRecognition = () => {
 
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const currentTranscript = event.results[i][0].transcript;
-          transcript += currentTranscript;
+          transcript += ` ${currentTranscript}`;
         }
 
         setTranscript((prev) => prev + transcript);
@@ -38,9 +38,9 @@ export const useSpeechRecognition = () => {
 
   const startListening = () => {
     if (recognitionRef.current) {
-      setTranscript("");
       recognitionRef.current.start();
       setIsListening(true);
+      setTranscript("");
     }
   };
 

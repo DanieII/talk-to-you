@@ -24,9 +24,9 @@ export default async function Conversation({ params }: ConversationProps) {
 
   return (
     <div className="container mx-auto flex flex-grow flex-col p-8">
-      <div>
+      <div className="flex flex-col gap-8">
         {messages.map((message, index) => (
-          <Message key={index} content={message.content} />
+          <Message key={index} role={message.role} content={message.content} />
         ))}
       </div>
       <div className="mt-auto">
