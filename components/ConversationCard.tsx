@@ -19,10 +19,10 @@ export default function ConversationCard({
   additionalData,
 }: ConversationCardProps) {
   return (
-    <Card className="cursor-pointer">
+    <Card className="h-full cursor-pointer">
       <CardHeader>
         <Image
-          className="rounded-lg"
+          className="mx-auto rounded-lg"
           src={getConversationImage(title)}
           width={500}
           height={500}

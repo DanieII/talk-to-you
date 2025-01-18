@@ -5,7 +5,7 @@ import ConversationCard from "@/components/ConversationCard";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { getUserConversations } from "@/lib/conversations";
-import RemoveConversation from "@/components/RemoveConversation";
+import DeleteConversation from "@/components/DeleteConversation";
 
 export default async function Conversations() {
   const session = await auth();
@@ -21,10 +21,10 @@ export default async function Conversations() {
           <MessageCircle /> Start a conversation
         </Button>
       </Link>
-      <div className="flex flex-wrap justify-center gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {userConversations.map((conversation) => (
-          <div className="relative lg:basis-[30%]" key={conversation.id}>
-            <RemoveConversation conversationId={conversation.id} />
+          <div className="relative h-full" key={conversation.id}>
+            <DeleteConversation conversationId={conversation.id} />
             <Link href={`/conversations/${conversation.id}`}>
               <ConversationCard
                 title={conversation.title}

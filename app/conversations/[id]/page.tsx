@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
-import { db } from "@/db";
-import { conversations } from "@/db/schema/conversations";
-import { and, eq } from "drizzle-orm";
+import Message from "@/components/Message";
+import MessageRecorder from "@/components/MessageRecorder";
+import { getConversation, getMessages } from "@/lib/conversations";
 import { redirect } from "next/navigation";
 
 type ConversationProps = {
@@ -12,29 +12,25 @@ export default async function Conversation({ params }: ConversationProps) {
   const session = await auth();
   if (!session) redirect("/api/auth/signin");
 
-  const { id } = await params;
-  const [conversationRows] = await db
-    .select({ conversationTitle: conversations.title })
-    .from(conversations)
-    .where(
-      and(eq(conversations.id, id), eq(conversations.userId, session.user.id)),
-    );
-  const { conversationTitle } = conversationRows;
+  const { id: conversationId } = await params;
+
+  // Validate if id exists and conversation belongs to user
+  const conversation = await getConversation(conversationId);
+  if (!conversation || conversation.userId !== session.user.id) {
+    redirect("/404");
+  }
+
+  const messages = await getMessages(conversationId);
 
   return (
     <div className="container mx-auto flex flex-grow flex-col p-8">
-      <h1 className="text-center text-2xl font-bold">{conversationTitle}</h1>
-      <div className="flex flex-col">
-        <div className="flex-grow">
-          <div>
-            <p>Chat</p>
-          </div>
-        </div>
-        <div>
-          <div>
-            <p>Speak</p>
-          </div>
-        </div>
+      <div>
+        {messages.map((message, index) => (
+          <Message key={index} content={message.content} />
+        ))}
+      </div>
+      <div className="mt-auto">
+        <MessageRecorder conversationId={conversationId} />
       </div>
     </div>
   );

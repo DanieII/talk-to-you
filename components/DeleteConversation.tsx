@@ -1,21 +1,21 @@
-import { removeConversation } from "@/lib/conversations";
+import { deleteConversation } from "@/lib/conversations";
 import { Button } from "./ui/button";
 import { Trash } from "lucide-react";
 
-type RemoveConversationProps = {
+type DeleteConversationProps = {
   conversationId: string;
 };
 
-export default function RemoveConversation({
+export default function DeleteConversation({
   conversationId,
-}: RemoveConversationProps) {
-  const removeConversationWithId = removeConversation.bind(
+}: DeleteConversationProps) {
+  const deleteConversationWithId = deleteConversation.bind(
     null,
     conversationId,
   );
 
   return (
-    <form action={removeConversationWithId}>
+    <form action={deleteConversationWithId}>
       <Button
         className="absolute right-4 top-4"
         variant="destructive"

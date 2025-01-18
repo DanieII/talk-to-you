@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db";
-import { conversations } from "@/db/schema/conversations";
+import { conversations, messages } from "@/db/schema/conversations";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { and, eq } from "drizzle-orm";
@@ -29,18 +29,33 @@ export async function getUserConversations(userId: string) {
   return userConversations;
 }
 
-export async function removeConversation(conversationId: string) {
-  const session = await auth();
-  if (!session) redirect("api/auth/signin");
+export async function getConversation(conversationId: string) {
+  const conversation = await db.query.conversations.findFirst({
+    where: eq(conversations.id, conversationId),
+  });
 
-  await db
-    .delete(conversations)
-    .where(
-      and(
-        eq(conversations.id, conversationId),
-        eq(conversations.userId, session.user.id),
-      ),
-    );
+  return conversation;
+}
+
+export async function deleteConversation(conversationId: string) {
+  await db.delete(conversations).where(eq(conversations.id, conversationId));
 
   revalidatePath("/conversations");
+}
+
+export async function createMessage(conversationId: string, message: string) {
+  await db
+    .insert(messages)
+    .values({ conversationId, role: "user", content: message });
+
+  revalidatePath(`/conversations/${conversationId}`);
+}
+
+export async function getMessages(conversationId: string) {
+  const conversationMessages = await db
+    .select({ role: messages.role, content: messages.content })
+    .from(messages)
+    .where(eq(messages.conversationId, conversationId));
+
+  return conversationMessages;
 }
