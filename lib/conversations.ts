@@ -4,7 +4,7 @@ import { db } from "@/db";
 import { conversations, messages } from "@/db/schema/conversations";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { and, eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export async function createConversation(title: string) {
@@ -24,7 +24,8 @@ export async function getUserConversations(userId: string) {
   const userConversations = await db
     .select()
     .from(conversations)
-    .where(eq(conversations.userId, userId));
+    .where(eq(conversations.userId, userId))
+    .orderBy(desc(conversations.createdAt));
 
   return userConversations;
 }
