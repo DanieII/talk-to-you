@@ -26,7 +26,7 @@ export default function RootLayout({
           className={`${openSans.className} flex min-h-screen flex-col antialiased`}
         >
           <NavBar />
-          <main className="flex flex-grow flex-col">{children}</main>
+          <main className="mt-16 lg:mt-24">{children}</main>
         </body>
       </html>
     </SessionProvider>

@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
-import Message from "@/components/Message";
 import MessageRecorder from "@/components/MessageRecorder";
+import Messages from "@/components/Messages";
+import { MessagesProvider } from "@/contexts/MessagesContext";
 import { getConversation, getMessages } from "@/lib/conversations";
 import { redirect } from "next/navigation";
 
@@ -23,15 +24,15 @@ export default async function Conversation({ params }: ConversationProps) {
   const messages = await getMessages(conversationId);
 
   return (
-    <div className="container mx-auto flex flex-grow flex-col p-8">
-      <div className="flex flex-col gap-8">
-        {messages.map((message, index) => (
-          <Message key={index} role={message.role} content={message.content} />
-        ))}
+    <MessagesProvider>
+      <div className="container mx-auto flex flex-grow flex-col p-8">
+        <div className="mb-14 lg:mb-24">
+          <Messages initialMessages={messages} />
+        </div>
+        <div className="fixed bottom-0 left-0 h-16 w-full border border-t-neutral-100 bg-background p-8 lg:h-24">
+          <MessageRecorder conversationId={conversationId} />
+        </div>
       </div>
-      <div className="mt-auto">
-        <MessageRecorder conversationId={conversationId} />
-      </div>
-    </div>
+    </MessagesProvider>
   );
 }

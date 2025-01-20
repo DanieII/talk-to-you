@@ -34,8 +34,8 @@ export default function NavBar() {
   }, [status]);
 
   return (
-    <nav>
-      <div className="container mx-auto flex items-center justify-between p-4">
+    <nav className="fixed left-0 top-0 z-[999] h-16 w-full border border-b-neutral-100 bg-background lg:h-24">
+      <div className="container mx-auto flex h-full items-center justify-between p-8">
         <Link className="flex-1 text-lg font-bold lg:text-xl" href="/">
           TalkToYou<span className="text-primary">AI</span>
         </Link>

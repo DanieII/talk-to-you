@@ -20,7 +20,7 @@ export default function NavBarMenu({ menuLinks }: NavBarMenuProps) {
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       />
       {isMenuOpen && (
-        <div className="absolute right-0 top-0 z-[999] flex h-full w-[65vw] flex-col bg-background p-4 shadow-xl sm:hidden">
+        <div className="fixed right-0 top-0 z-[999] flex h-full w-[65vw] flex-col bg-background p-4 shadow-xl sm:hidden">
           <XIcon
             className="ml-auto cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}

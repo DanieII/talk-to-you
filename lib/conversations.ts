@@ -44,12 +44,20 @@ export async function deleteConversation(conversationId: string) {
   revalidatePath("/conversations");
 }
 
-export async function createMessage(conversationId: string, message: string) {
-  await db
+export async function createMessage(
+  conversationId: string,
+  role: string,
+  message: string,
+) {
+  const newMessage = await db
     .insert(messages)
-    .values({ conversationId, role: "user", content: message });
+    .values({ conversationId, role, content: message })
+    .returning({
+      role: messages.role,
+      content: messages.content,
+    });
 
-  revalidatePath(`/conversations/${conversationId}`);
+  return newMessage;
 }
 
 export async function getMessages(conversationId: string) {
@@ -59,4 +67,12 @@ export async function getMessages(conversationId: string) {
     .where(eq(messages.conversationId, conversationId));
 
   return conversationMessages;
+}
+
+export async function generateResponse(conversationId: string) {
+  // TODO: Get messages for conversation and use them with OpenAI API to generate a response
+
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+
+  return "AI response";
 }

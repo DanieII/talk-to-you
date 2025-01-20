@@ -16,7 +16,7 @@ export default function Home() {
             </span>{" "}
             with AI in{" "}
             <span className="animate-text bg-gradient-to-r from-teal-500 via-purple-500 to-orange-500 bg-clip-text text-transparent">
-              real-world scenarios
+              real-world situations
             </span>
           </h1>
           <p className="max-w-sm font-normal">
