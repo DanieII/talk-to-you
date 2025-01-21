@@ -29,7 +29,6 @@ export const useSpeechRecognition = () => {
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = getTranscript(event);
-        console.log(transcript);
 
         if (!transcript) {
           setError("Could not recognize speech. Please try again.");
@@ -39,13 +38,26 @@ export const useSpeechRecognition = () => {
         }
       };
 
-      recognition.onerror = (event: SpeechRecognitionErrorEvent) =>
-        setError(event.error);
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+        const error = event.error;
+
+        if (error === "aborted") {
+          return;
+        }
+
+        setError(error);
+      };
 
       recognitionRef.current = recognition;
     } else {
       setError("Speech recognition is not supported in this browser.");
     }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
   }, []);
 
   const startListening = () => {
@@ -71,6 +83,13 @@ export const useSpeechRecognition = () => {
     }
   };
 
+  const abortListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.abort();
+      setIsListening(false);
+    }
+  };
+
   return {
     isListening,
     transcript,
@@ -78,5 +97,6 @@ export const useSpeechRecognition = () => {
     startListening,
     stopListening,
     toggleListening,
+    abortListening,
   };
 };

@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import MessageRecorder from "@/components/MessageRecorder";
 import Messages from "@/components/Messages";
 import { MessagesProvider } from "@/contexts/MessagesContext";
+import { SpeechSynthesisProvider } from "@/contexts/SpeechSynthesisContext";
 import { getConversation, getMessages } from "@/lib/conversations";
 import { redirect } from "next/navigation";
 
@@ -25,14 +26,16 @@ export default async function Conversation({ params }: ConversationProps) {
 
   return (
     <MessagesProvider>
-      <div className="container mx-auto flex flex-grow flex-col p-8">
-        <div className="mb-20 lg:mb-28">
-          <Messages initialMessages={messages} />
+      <SpeechSynthesisProvider>
+        <div className="container mx-auto flex flex-grow flex-col p-8">
+          <div className="mb-20">
+            <Messages initialMessages={messages} />
+          </div>
+          <div className="fixed bottom-0 left-0 h-28 w-full border border-t-neutral-100 bg-background">
+            <MessageRecorder conversationId={conversationId} />
+          </div>
         </div>
-        <div className="fixed bottom-0 left-0 h-28 w-full border border-t-neutral-100 bg-background p-8 lg:h-36">
-          <MessageRecorder conversationId={conversationId} />
-        </div>
-      </div>
+      </SpeechSynthesisProvider>
     </MessagesProvider>
   );
 }

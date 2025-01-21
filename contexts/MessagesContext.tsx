@@ -3,12 +3,12 @@
 import { TMessage } from "@/types/Message";
 import { createContext, useState } from "react";
 
-type TMessageContext = {
+type MessageContext = {
   messages: TMessage[];
   setMessages: React.Dispatch<React.SetStateAction<TMessage[]>>;
 };
 
-export const MessagesContext = createContext<TMessageContext>({
+export const MessagesContext = createContext<MessageContext>({
   messages: [],
   setMessages: () => {},
 });

@@ -3,9 +3,11 @@
 import { MessagesContext } from "@/contexts/MessagesContext";
 import { useSpeechRecognition } from "@/hooks/useSpeechRecognition";
 import { createMessage, generateResponse } from "@/lib/conversations";
-import { Mic, Loader } from "lucide-react";
+import { Mic, Loader, Trash2 } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import styles from "@/styles/rotate.module.css";
+import SpeechOptions from "./SpeechOptions";
+import { SpeechSynthesis } from "@/contexts/SpeechSynthesisContext";
 
 type MessageRecorderProps = {
   conversationId: string;
@@ -16,8 +18,9 @@ export default function MessageRecorder({
 }: MessageRecorderProps) {
   const { messages, setMessages } = useContext(MessagesContext);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const { isListening, transcript, error, toggleListening } =
+  const { isListening, transcript, error, toggleListening, abortListening } =
     useSpeechRecognition();
+  const { speak, setRate } = useContext(SpeechSynthesis);
 
   const addUserMessage = async (conversationId: string, content: string) => {
     const [newMessage] = await createMessage(conversationId, "user", content);
@@ -32,6 +35,7 @@ export default function MessageRecorder({
       content,
     );
     setMessages((prevMessages) => [...prevMessages, newMessage]);
+    speak(content);
   };
 
   const addUserMessageAndAIResponse = async (
@@ -60,21 +64,33 @@ export default function MessageRecorder({
   }, [transcript]);
 
   return (
-    <div className="h-full">
-      <div className="flex h-full flex-col items-center justify-center">
-        <div className="text-primary">
+    <div className="container mx-auto h-full p-8">
+      <div className="relative flex h-full items-center justify-center">
+        <div className="flex-1">
+          <SpeechOptions setRate={setRate} />
+        </div>
+        <div className="flex-1">
           {isWaitingForResponse ? (
-            <Loader className={styles.rotate} size="44" />
+            <Loader
+              className={`${styles.rotate} -translate-x-1/2 text-primary`}
+              size="44"
+            />
           ) : (
             <Mic
-              className={`cursor-pointer ${isListening && "text-destructive"}`}
+              className={`-translate-x-1/2 cursor-pointer ${isListening ? "text-destructive" : "text-primary"}`}
               size="44"
               onClick={() => toggleListening()}
             />
           )}
+          {isListening && (
+            <Trash2
+              className="absolute right-[65%] top-1/2 -translate-y-1/2 translate-x-1/2 cursor-pointer text-primary hover:text-destructive lg:right-[55%]"
+              onClick={() => abortListening()}
+            />
+          )}
         </div>
-        <p className="text-center text-destructive">{error}</p>
       </div>
+      {error && <p className="text-center text-destructive">{error}</p>}
     </div>
   );
 }

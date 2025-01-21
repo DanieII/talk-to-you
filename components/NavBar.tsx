@@ -42,7 +42,7 @@ export default function NavBar() {
         <div className="hidden flex-1 items-center justify-center gap-4 sm:flex">
           {navBarLinks.map((link) => (
             <Link
-              className="font-bold hover:underline"
+              className="text-center font-bold hover:underline"
               key={link.href}
               href={link.href}
             >
