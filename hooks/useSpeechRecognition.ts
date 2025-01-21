@@ -7,6 +7,17 @@ export const useSpeechRecognition = () => {
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
+  const getTranscript = (event: SpeechRecognitionEvent) => {
+    let transcript = "";
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const currentTranscript = event.results[i][0].transcript;
+      transcript += ` ${currentTranscript}`;
+    }
+
+    return transcript.trim();
+  };
+
   useEffect(() => {
     const SpeechRecognition =
       window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -17,14 +28,15 @@ export const useSpeechRecognition = () => {
       recognition.lang = "en-US";
 
       recognition.onresult = (event: SpeechRecognitionEvent) => {
-        let transcript = "";
+        const transcript = getTranscript(event);
+        console.log(transcript);
 
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const currentTranscript = event.results[i][0].transcript;
-          transcript += ` ${currentTranscript}`;
+        if (!transcript) {
+          setError("Could not recognize speech. Please try again.");
+        } else {
+          setError("");
+          setTranscript((prev) => prev + transcript);
         }
-
-        setTranscript((prev) => prev + transcript);
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) =>

@@ -26,10 +26,10 @@ export default async function Conversation({ params }: ConversationProps) {
   return (
     <MessagesProvider>
       <div className="container mx-auto flex flex-grow flex-col p-8">
-        <div className="mb-14 lg:mb-24">
+        <div className="mb-20 lg:mb-28">
           <Messages initialMessages={messages} />
         </div>
-        <div className="fixed bottom-0 left-0 h-16 w-full border border-t-neutral-100 bg-background p-8 lg:h-24">
+        <div className="fixed bottom-0 left-0 h-28 w-full border border-t-neutral-100 bg-background p-8 lg:h-36">
           <MessageRecorder conversationId={conversationId} />
         </div>
       </div>

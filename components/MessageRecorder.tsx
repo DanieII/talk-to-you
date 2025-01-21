@@ -61,22 +61,19 @@ export default function MessageRecorder({
 
   return (
     <div className="h-full">
-      <div className="flex h-full items-center justify-center">
-        {error ? (
-          <p className="text-destructive">{error}</p>
-        ) : (
-          <div className="text-primary">
-            {isWaitingForResponse ? (
-              <Loader className={styles.rotate} size="44" />
-            ) : (
-              <Mic
-                className={`cursor-pointer ${isListening && "text-destructive"}`}
-                size="44"
-                onClick={() => toggleListening()}
-              />
-            )}
-          </div>
-        )}
+      <div className="flex h-full flex-col items-center justify-center">
+        <div className="text-primary">
+          {isWaitingForResponse ? (
+            <Loader className={styles.rotate} size="44" />
+          ) : (
+            <Mic
+              className={`cursor-pointer ${isListening && "text-destructive"}`}
+              size="44"
+              onClick={() => toggleListening()}
+            />
+          )}
+        </div>
+        <p className="text-center text-destructive">{error}</p>
       </div>
     </div>
   );
