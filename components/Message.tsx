@@ -1,8 +1,8 @@
 "use client";
 
 import { SpeechSynthesis } from "@/contexts/SpeechSynthesisContext";
-import { AudioLines, Copy } from "lucide-react";
-import { useContext } from "react";
+import { AudioLines, Copy, Pause } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -16,7 +16,21 @@ type MessageProps = {
 };
 
 export default function Message({ role, content }: MessageProps) {
-  const { speak } = useContext(SpeechSynthesis);
+  const { speak, isSpeaking, stopSpeaking } = useContext(SpeechSynthesis);
+  const [isListening, setIsListening] = useState(false);
+
+  useEffect(() => {
+    if (isListening && !isSpeaking) {
+      setIsListening(false);
+    }
+  }, [isSpeaking]);
+
+  const handleListen = () => {
+    if (!isSpeaking) {
+      speak(content);
+      setIsListening(true);
+    }
+  };
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(content);
@@ -32,10 +46,14 @@ export default function Message({ role, content }: MessageProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <AudioLines
-                  className="ml-auto cursor-pointer hover:opacity-50"
-                  onClick={() => speak(content)}
-                />
+                {isListening ? (
+                  <Pause onClick={() => stopSpeaking()} />
+                ) : (
+                  <AudioLines
+                    className="ml-auto cursor-pointer hover:opacity-50"
+                    onClick={() => handleListen()}
+                  />
+                )}
               </TooltipTrigger>
               <TooltipContent>
                 <p>Listen</p>
