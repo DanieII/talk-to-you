@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Talk To You
+Talk to You is a Next.js application that helps users practice speaking English by interacting with AI.
+
+## Features
+- Start conversations with AI with different context scenarios
+- Manage conversations
+- Speak with AI using speech recognition
+- Hear the AI responses using text to speech
+- OAuth authentication using Auth.js
+
+## Tech Stack
+- Next.js
+- PostgreSQL
+- Drizzle ORM
+- ShadcdnUI
+- TailwindCSS
+- Auth.js
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+- Node.js
+- npm
+- PostgreSQL or Docker
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Installation
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. **Clone the repository**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+    ```bash
+    https://github.com/DanieII/talk-to-you.git
+    cd talk-to-you
+    ```
+    
+2. **Install dependencies**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    npm install
+    ```
 
-## Learn More
+3. **Set up environment variables**
 
-To learn more about Next.js, take a look at the following resources:
+    Create a `.env.local` file in the root directory and add the following variables:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```env
+    AUTH_SECRET=
+    AUTH_GOOGLE_ID=
+    AUTH_GOOGLE_SECRET=
+    DATABASE_URL=
+    AUTH_DRIZZLE_URL=
+    OPENAI_API_KEY=
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    - `AUTH_SECRET`: Generate a random secret key. You can use tools like [randomkeygen](https://randomkeygen.com/).
+    - `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET`: Obtain these from the [Google Developer Console](https://console.developers.google.com/) by creating OAuth 2.0 credentials.
+    - `DATABASE_URL`: Use the format `postgresql://user:password@localhost:5432/database` for your PostgreSQL database.
+    - `AUTH_DRIZZLE_URL`: Typically the same as `DATABASE_URL`.
+    - `OPENAI_API_KEY`: Obtain this from [OpenAI](https://beta.openai.com/signup/).
 
-## Deploy on Vercel
+4. Set up database
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    [Get Started with Drizzle and PostgreSQL](https://orm.drizzle.team/docs/get-started/postgresql-new)
+    
+    ```bash
+    docker run --name drizzle-postgres -e POSTGRES_PASSWORD=mypassword -d -p 5432:5432 postgres
+    ```
+  
+    ```bash
+    npx drizzle-kit push
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Start the development server
+
+    ```bash
+    npm run dev
+    ```
