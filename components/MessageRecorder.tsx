@@ -10,16 +10,24 @@ import SpeechOptions from "./SpeechOptions";
 import { SpeechSynthesis } from "@/contexts/SpeechSynthesisContext";
 
 type MessageRecorderProps = {
+  scenario: string;
   conversationId: string;
 };
 
 export default function MessageRecorder({
+  scenario,
   conversationId,
 }: MessageRecorderProps) {
-  const { messages, setMessages } = useContext(MessagesContext);
+  const { setMessages } = useContext(MessagesContext);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
-  const { isListening, transcript, error, toggleListening, abortListening } =
-    useSpeechRecognition();
+  const [error, setError] = useState("");
+  const {
+    isListening,
+    transcript,
+    transcriptError,
+    toggleListening,
+    abortListening,
+  } = useSpeechRecognition();
   const { speak, setRate } = useContext(SpeechSynthesis);
 
   const addUserMessage = async (conversationId: string, content: string) => {
@@ -28,14 +36,18 @@ export default function MessageRecorder({
   };
 
   const addAIResponse = async (conversationId: string) => {
-    const content = await generateResponse(conversationId);
-    const [newMessage] = await createMessage(
-      conversationId,
-      "assistant",
-      content,
-    );
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    speak(content);
+    try {
+      const content = await generateResponse(scenario, conversationId);
+      const [newMessage] = await createMessage(
+        conversationId,
+        "assistant",
+        content,
+      );
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      speak(content);
+    } catch (error) {
+      setError("An error occurred while generating the AI response.");
+    }
   };
 
   const addUserMessageAndAIResponse = async (
@@ -55,12 +67,6 @@ export default function MessageRecorder({
         addUserMessageAndAIResponse(conversationId, userMessage);
       }
     }
-
-    return () => {
-      if (isListening) {
-        toggleListening();
-      }
-    };
   }, [transcript]);
 
   return (
@@ -90,7 +96,11 @@ export default function MessageRecorder({
           )}
         </div>
       </div>
-      {error && <p className="text-center text-destructive">{error}</p>}
+      {(transcriptError || error) && (
+        <p className="text-center text-destructive">
+          {transcriptError || error}
+        </p>
+      )}
     </div>
   );
 }

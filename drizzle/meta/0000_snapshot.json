@@ -1,5 +1,5 @@
 {
-  "id": "b4efcee0-83e5-4b6c-8425-f0fab3699ad9",
+  "id": "c42dd40e-68ee-4d04-8bbd-b5e4bac1fb5f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,8 +20,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "category": {
-          "name": "category",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -30,7 +30,7 @@
           "name": "created_at",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         }
       },

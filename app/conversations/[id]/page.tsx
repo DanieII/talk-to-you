@@ -32,7 +32,10 @@ export default async function Conversation({ params }: ConversationProps) {
             <Messages initialMessages={messages} />
           </div>
           <div className="fixed bottom-0 left-0 h-28 w-full border border-t-neutral-100 bg-background">
-            <MessageRecorder conversationId={conversationId} />
+            <MessageRecorder
+              scenario={conversation.title}
+              conversationId={conversationId}
+            />
           </div>
         </div>
       </SpeechSynthesisProvider>

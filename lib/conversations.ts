@@ -6,6 +6,8 @@ import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { desc, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { getDeveloperMessage } from "@/lib/utils";
+import { getAiCompletion } from "./openai";
 
 export async function createConversation(title: string) {
   const session = await auth();
@@ -69,10 +71,14 @@ export async function getMessages(conversationId: string) {
   return conversationMessages;
 }
 
-export async function generateResponse(conversationId: string) {
-  // TODO: Get messages for conversation and use them with OpenAI API to generate a response
+export async function generateResponse(
+  scenario: string,
+  conversationId: string,
+) {
+  const developerMessage = getDeveloperMessage(scenario);
+  const messages = await getMessages(conversationId);
+  const allMessages = [developerMessage, ...messages];
+  const completion = await getAiCompletion(allMessages, false);
 
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-
-  return "AI response";
+  return completion;
 }

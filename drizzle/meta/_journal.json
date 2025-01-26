@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1736715073282,
-      "tag": "0000_pale_sprite",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1736798029629,
-      "tag": "0001_tricky_hobgoblin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1736839298322,
-      "tag": "0002_loose_garia",
+      "when": 1737880788806,
+      "tag": "0000_confused_speed",
       "breakpoints": true
     }
   ]

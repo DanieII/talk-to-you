@@ -1,8 +1,8 @@
 CREATE TABLE "conversations" (
 	"id" text PRIMARY KEY NOT NULL,
 	"user_id" text NOT NULL,
-	"category" text NOT NULL,
-	"created_at" timestamp DEFAULT now()
+	"title" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "messages" (

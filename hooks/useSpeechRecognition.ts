@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 export const useSpeechRecognition = () => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [error, setError] = useState("");
+  const [transcriptError, setTranscriptError] = useState("");
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
 
@@ -31,26 +31,30 @@ export const useSpeechRecognition = () => {
         const transcript = getTranscript(event);
 
         if (!transcript) {
-          setError("Could not recognize speech. Please try again.");
+          setTranscriptError("Could not recognize speech. Please try again.");
         } else {
-          setError("");
-          setTranscript((prev) => prev + transcript);
+          setTranscriptError("");
+          setTranscript((prev) => prev + " " + transcript);
         }
       };
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         const error = event.error;
 
+        // Aborted is part of functionality
         if (error === "aborted") {
           return;
         }
 
-        setError(error);
+        setTranscriptError(error);
+        stopListening();
       };
 
       recognitionRef.current = recognition;
     } else {
-      setError("Speech recognition is not supported in this browser.");
+      setTranscriptError(
+        "Speech recognition is not supported in this browser.",
+      );
     }
 
     return () => {
@@ -87,13 +91,14 @@ export const useSpeechRecognition = () => {
     if (recognitionRef.current) {
       recognitionRef.current.abort();
       setIsListening(false);
+      setTranscript("");
     }
   };
 
   return {
     isListening,
     transcript,
-    error,
+    transcriptError,
     startListening,
     stopListening,
     toggleListening,

@@ -1,1 +1,0 @@
-ALTER TABLE "conversations" RENAME COLUMN "category" TO "scenario";
